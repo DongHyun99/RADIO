@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/home/dhhan/RADIO/')
+
 # Copyright (c) 2024, NVIDIA CORPORATION.  All rights reserved.
 #
 # NVIDIA CORPORATION and its licensors retain all intellectual property
@@ -5,10 +8,6 @@
 # and any modifications thereto.  Any use, reproduction, disclosure or
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
-
-import sys
-sys.path.append('/home/dhhan/RADIO/')
-
 import argparse
 from collections import defaultdict
 from hashlib import sha256
@@ -54,10 +53,10 @@ def main(rank: int = 0, world_size: int = 1):
                              ' If not specified, center cropped 378px is used.'
                              ' Default: The RADIO model\'s preferred resolution.'
     )
-    parser.add_argument('-d', '--dataset', default='imagenet-1k',
+    parser.add_argument('-d', '--dataset', default='benchmark/imagenet-1k/imagenet-1k.py',
                         help='The name of the dataset to classify'
     )
-    parser.add_argument('--split', default='validation',
+    parser.add_argument('--split', default='test',
                         help='The dataset split to use.'
     )
     parser.add_argument('--resize-multiple', type=int, default=16,
@@ -96,8 +95,9 @@ def main(rank: int = 0, world_size: int = 1):
     rank_print('Done')
 
     rank_print('Loading dataset...')
+    load_dataset(args.dataset, trust_remote_code=True)
     ds_builder = load_dataset_builder(args.dataset, trust_remote_code=True)
-    ds_builder.download_and_prepare()
+    # ds_builder.download_and_prepare()
     num_examples = ds_builder.info.splits[args.split].num_examples
 
     if args.resolution is None:

@@ -5,6 +5,10 @@
 # and any modifications thereto.  Any use, reproduction, disclosure or
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
+
+import sys
+sys.path.append('/home/dhhan/RADIO/')
+
 import argparse
 from collections import defaultdict
 import math
@@ -63,7 +67,7 @@ def main(rank: int = 0, world_size: int = 1):
     parser.add_argument('--eval-split', default='validation',
                         help='The evaluation split to use. If labels are present, accuracy will be computed'
     )
-    parser.add_argument('--batch-size', type=int, default=128,
+    parser.add_argument('--batch-size', type=int, default=512,
                         help='The batch size. If the input is variable sized, then this argument becomes a maximum.'
     )
     parser.add_argument('-w', '--workers', default=8, type=int,
@@ -112,16 +116,16 @@ def main(rank: int = 0, world_size: int = 1):
 
     # Because data may be downloaded and cached, we want only rank 0 to do that first (to prevent corruption),
     # and then the other ranks will execute once rank 0 is finished
-    with run_rank_0_first():
-        ds_train_builder.download_and_prepare()
+    # with run_rank_0_first():
+    #     ds_train_builder.download_and_prepare()
 
     if args.eval_dataset:
         ds_eval_builder = load_dataset_builder(args.eval_dataset, trust_remote_code=True)
-        with run_rank_0_first():
-            ds_eval_builder.download_and_prepare()
+        # with run_rank_0_first():
+        #     ds_eval_builder.download_and_prepare()
     else:
         ds_eval_builder = ds_train_builder
-
+    
     num_eval_examples = ds_eval_builder.info.splits[args.eval_split].num_examples
     assert num_classes == ds_eval_builder.info.features['label'].num_classes, "The number of classes must match between train and eval!"
 
