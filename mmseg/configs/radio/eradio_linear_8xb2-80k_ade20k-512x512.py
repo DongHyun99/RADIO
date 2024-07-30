@@ -8,6 +8,7 @@ _base_ = [
 
 # model settings
 crop_size = (512, 512)
+size_divisor = 32  # ADDED: Using for padding like RADIO
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
@@ -41,7 +42,8 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     # model training and testing settings
     train_cfg=dict(),
-    test_cfg=dict(mode='slide', crop_size=crop_size, stride=(341, 341)))
+    test_cfg=dict(mode='whole'),
+)
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -85,6 +87,8 @@ val_dataloader = dict(
             dict(type="Resize", scale=(2048, 512), keep_ratio=True),
             # add loading annotation after ``Resize`` because ground truth
             # does not need to do resize data transform
+            # UPDATED: Pad to multiple of size_divisor (32 for E-RADIO)
+            dict(type="Pad", size_divisor=size_divisor),
             dict(type="LoadAnnotations", reduce_zero_label=True),
             dict(type="PackSegInputs"),
         ]
