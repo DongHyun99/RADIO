@@ -29,11 +29,11 @@ huggingface-cli login
 Specify location of dataset:
 
 ```Bash
-export ADE20K_ROOT_DIR=/path/to/ade20k/dataset
+export ADE20K_ROOT_DIR=/home/dhhan/RADIO/data/ADE20K
 ```
 
 Start training:
 
 ```Bash
-python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train.py configs/radio/radio_linear_8xb2-80k_ade20k-512x512.py --launcher pytorch --cfg-options "train_dataloader.dataset.data_root=/${ADE20K_ROOT_DIR}" --cfg-options "val_dataloader.dataset.data_root=${ADE20K_ROOT_DIR}"
+NCCL_P2P_DISABLE=1 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train.py configs/radio/radio_linear_8xb2-80k_ade20k-512x512.py --launcher pytorch --cfg-options "train_dataloader.dataset.data_root=/${ADE20K_ROOT_DIR}" --cfg-options "val_dataloader.dataset.data_root=${ADE20K_ROOT_DIR}"
 ```

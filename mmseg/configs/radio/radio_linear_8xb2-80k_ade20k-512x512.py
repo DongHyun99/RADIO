@@ -1,5 +1,3 @@
-import os
-
 _base_ = [
     "../_base_/datasets/ade20k.py",
     "../_base_/default_runtime.py",
@@ -7,7 +5,7 @@ _base_ = [
 ]
 
 # model settings
-crop_size = (518, 518)
+crop_size = (512, 512)
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
@@ -71,7 +69,7 @@ param_scheduler = [
 ]
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
-train_dataloader = dict(batch_size=2)
+train_dataloader = dict(batch_size=48)
 val_dataloader = dict(
     batch_size=1,
     dataset=dict(
