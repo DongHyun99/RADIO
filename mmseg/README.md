@@ -26,6 +26,8 @@ huggingface-cli login
 
 ## Train
 
+### ADE20K
+
 Specify location of dataset:
 
 ```Bash
@@ -36,4 +38,30 @@ Start training:
 
 ```Bash
 NCCL_P2P_DISABLE=1 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train.py configs/radio/radio_linear_8xb2-80k_ade20k-512x512.py --launcher pytorch --cfg-options "train_dataloader.dataset.data_root=/${ADE20K_ROOT_DIR}" --cfg-options "val_dataloader.dataset.data_root=${ADE20K_ROOT_DIR}"
+```
+
+Train 4 GPUs:
+
+```bash
+CUDA_VISIBLE_DEVICES=4,5,6,7 NCCL_P2P_DISABLE=1 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=4 train.py configs/radio/radio_linear_8xb2-80k_ade20k-512x512.py --launcher pytorch --cfg-options "train_dataloader.dataset.data_root=/${ADE20K_ROOT_DIR}" --cfg-options "val_dataloader.dataset.data_root=${ADE20K_ROOT_DIR}"
+```
+
+### VOC
+
+Specify location of dataset:
+
+```Bash
+export VOC_ROOT_DIR=/home/dhhan/RADIO/data/VOCdevkit/VOC2012
+```
+
+Start training:
+
+```Bash
+NCCL_P2P_DISABLE=1 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train.py configs/radio/radio_linear_8xb2-10k_voc-512x512.py --launcher pytorch --cfg-options "train_dataloader.dataset.data_root=/${VOC_ROOT_DIR}" --cfg-options "val_dataloader.dataset.data_root=${VOC_ROOT_DIR}"
+```
+
+Train 4 GPUs:
+
+```bash
+CUDA_VISIBLE_DEVICES=4,5,6,7 NCCL_P2P_DISABLE=1 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=4 train.py configs/radio/radio_linear_8xb2-10k_voc-512x512.py --launcher pytorch --cfg-options "train_dataloader.dataset.data_root=/${VOC_ROOT_DIR}" --cfg-options "val_dataloader.dataset.data_root=${VOC_ROOT_DIR}"
 ```

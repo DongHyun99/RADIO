@@ -61,3 +61,8 @@ def main():
         # build customized runner from the registry
         # if 'runner_type' is set in the cfg
         runner = RUNNERS.build(cfg)
+        
+    runner.val()
+    
+if __name__ == "__main__":
+    main()
