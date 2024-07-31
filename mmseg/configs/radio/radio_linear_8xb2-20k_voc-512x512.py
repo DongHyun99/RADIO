@@ -1,7 +1,7 @@
 _base_ = [
     "../_base_/datasets/voc.py",
     "../_base_/default_runtime.py",
-    "../_base_/schedules/schedule_10k.py",
+    "../_base_/schedules/schedule_20k.py",
 ]
 
 # model settings
