@@ -1,0 +1,17 @@
+# requirement.txt
+
+# pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+
+torch # https://pytorch.org/get-started/previous-versions/
+torchvision
+transformers==4.37.2
+datasets
+open-clip-torch
+easydict
+accelerate
+einops
+albumentations
+
+sentencepiece
+protobuf
+bitsandbytes
