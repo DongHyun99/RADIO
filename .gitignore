@@ -12,5 +12,6 @@ hf-checkpoints/
 vis_denoise/
 
 work_dirs/
+eval/
 
 *.zip
