@@ -15,3 +15,5 @@ albumentations
 sentencepiece
 protobuf
 bitsandbytes
+shortuuid
+peft
